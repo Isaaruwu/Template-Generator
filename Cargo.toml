@@ -1,3 +1,6 @@
 [package]
 name = "my-package"
 version = "0.1.0"
+[dependencies]
+log = "0.4.19"
+simple_logger = "4.2.0"
