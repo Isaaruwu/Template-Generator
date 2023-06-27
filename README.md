@@ -35,3 +35,12 @@ This Project Template Generator is an ongoing project, and there are several are
 - Creating a git repo. 
 - Implementing templates for specific project types (e.g., web applications, data science projects).
 - Enhancing the CLI interface with more interactive features and options.
+
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+## Contributing
+Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.
+
+## Acknowledgments
+This project was inspired by the need for a quick and standardized way to set up Python projects.
