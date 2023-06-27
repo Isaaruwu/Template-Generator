@@ -30,7 +30,7 @@ It allows you to quickly generate a project template with a predefined directory
 ## Future Development 
 This Project Template Generator is an ongoing project, and there are several areas that can be improved and expanded. Some ideas for future development include:
 
-- Adding support for different programming languages and frameworks.
+- Adding support for different programming languages and OS.
 - Providing additional project configuration options.
 - Creating a git repo. 
 - Implementing templates for specific project types (e.g., web applications, data science projects).
