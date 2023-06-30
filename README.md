@@ -32,6 +32,10 @@ NB. For additionnal help
    tgen --help
 ```
 
+## Supported languages
+Right now the project supports:
+- Python (default and data-science project type)
+  
 ## Future Development 
 This Project Template Generator is an ongoing project, and there are several areas that can be improved and expanded. Some ideas for future development include:
 
