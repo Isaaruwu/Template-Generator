@@ -1,6 +1,8 @@
 use simple_logger::SimpleLogger;
 use std::{env, path, fs};
 use clap::{App, Arg};
+use git2::Repository;
+
 
 mod python;
 use python::python::create_python_project;
@@ -15,7 +17,7 @@ fn create_directory(project_path: &path::PathBuf) {
     fs::create_dir(&project_path).unwrap();
 }
 
-fn create_project(language: &str, project_type: Option<&str>, project_name: &str, path: Option<&str>) {
+fn create_project(language: &str, project_type: Option<&str>, project_name: &str, path: Option<&str>, init_git: bool) {
     let current_dir = env::current_dir().unwrap();
     let mut project_path = path::Path::new(&current_dir).join(project_name);
 
@@ -34,6 +36,11 @@ fn create_project(language: &str, project_type: Option<&str>, project_name: &str
     match language {
         "py" => create_python_project(&project_path, &project_type),
         _ => log::warn!("Invalid language, please use 'py'"),
+    }
+
+    if init_git {
+        log::info!("Initializing Git repository...");
+        Repository::init(&project_path).unwrap();
     }
 }
 fn main() {
@@ -60,13 +67,21 @@ fn main() {
         .arg(Arg::with_name("path")
             .help("The path to use (optional)")
             .index(4))
+        .arg(Arg::with_name("git")
+            .short("g")
+            .long("git")
+            .takes_value(false)
+            .help("To initialize a Git repository"))
         .get_matches();
+        
 
     let language = matches.value_of("language").unwrap();
     let project_type = matches.value_of("project_type");
     let project_name = matches.value_of("project_name").unwrap();
-    let path = matches.value_of("path");
+    let path: Option<&str> = matches.value_of("path");
+    let init_git: bool = matches.is_present("git");
 
-    create_project(language, project_type, project_name, path);
+    create_project(language, project_type, project_name, path, init_git);
+    log::info!("Done!");
     
 }
