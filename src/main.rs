@@ -1,6 +1,7 @@
 use simple_logger::SimpleLogger;
 use std::{env, path, fs};
 use clap::{App, Arg};
+use std::io::{Write};
 use git2::Repository;
 
 
@@ -8,13 +9,29 @@ mod python;
 use python::python::create_python_project;
 
 fn create_directory(project_path: &path::PathBuf) {
-    if project_path.exists() {
-        log::error!("Project already exists, exiting...");
-        return;
-    }
-
     log::info!("Creating directory...");    
     fs::create_dir(&project_path).unwrap();
+}
+
+fn init_gitrepo(project_path: &path::PathBuf, language: &str) {
+    log::info!("Initializing Git repository...");
+    Repository::init(&project_path).unwrap();
+
+    let temp = env::current_exe().unwrap();
+    let current_dir = temp.ancestors().nth(3).unwrap();
+    let template_name = &format!("{}.gitignore", language);
+    let src_gitignore_path = current_dir
+        .join("src")
+        .join("ignore_templates")
+        .join(template_name);
+
+    let contents = fs::read_to_string(&src_gitignore_path).unwrap();
+
+    let gitignore = project_path.join(".gitignore");
+    let mut dest = fs::File::create(&gitignore).unwrap();
+
+    dest.write_all(contents.as_bytes()).unwrap();
+
 }
 
 fn create_project(language: &str, project_type: Option<&str>, project_name: &str, path: Option<&str>, init_git: bool) {
@@ -31,6 +48,11 @@ fn create_project(language: &str, project_type: Option<&str>, project_name: &str
         }
     }
 
+    if project_path.exists() {
+        log::error!("Project already exists, exiting...");
+        return;
+    }
+
     create_directory(&project_path);
 
     match language {
@@ -38,10 +60,9 @@ fn create_project(language: &str, project_type: Option<&str>, project_name: &str
         _ => log::warn!("Invalid language, please use 'py'"),
     }
 
-    if init_git {
-        log::info!("Initializing Git repository...");
-        Repository::init(&project_path).unwrap();
-    }
+    if init_git {init_gitrepo(&project_path, language);}
+    
+    log::info!("Done!");
 }
 fn main() {
     SimpleLogger::new().init().unwrap();
@@ -82,6 +103,4 @@ fn main() {
     let init_git: bool = matches.is_present("git");
 
     create_project(language, project_type, project_name, path, init_git);
-    log::info!("Done!");
-    
 }
