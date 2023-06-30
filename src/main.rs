@@ -1,4 +1,6 @@
 use simple_logger::SimpleLogger;
+use clap::{App, Arg};
+
 
 use std::{env, path, fs, process::Command};
 
@@ -63,9 +65,19 @@ fn pip_freeze(project_path: &path::PathBuf) {
     }
 }
 
-fn create_python_project(project_name: &str) {
+fn create_python_project(project_name: &str, path: Option<&str>) {
     let current_dir = env::current_dir().unwrap();
-    let project_path = path::Path::new(&current_dir).join(project_name);
+    let mut project_path = path::Path::new(&current_dir).join(project_name);
+
+    if let Some(path) = path {
+        let path = path::Path::new(path);
+        if path.exists() {
+            project_path = path.join(project_name);
+        } else {
+            log::error!("Path does not exist, exiting...");
+            return;
+        }
+    }
     
     if project_path.exists() {
         log::error!("Project already exists, exiting...");
@@ -81,21 +93,29 @@ fn create_python_project(project_name: &str) {
 fn main() {
     SimpleLogger::new().init().unwrap();
     
-    let args: Vec<String> = env::args().collect();
+    let matches = App::new("My CLI App")
+        .arg(Arg::with_name("command")
+            .help("The command to execute")
+            .required(true)
+            .index(1))
+        .arg(Arg::with_name("project_name")
+            .help("The name of the project")
+            .required(true)
+            .index(2))
+        .arg(Arg::with_name("path")
+            .help("The path to the project")
+            .required(false)
+            .index(3))
+        .get_matches();
 
-    if args.len() < 3 {
-        log::warn!("Invalid number of arguments, please use 'create <project_name>'");    
-        return;
-    }
-
-    let command = &args[1];
-    let project_name = &args[2];
+    let command = matches.value_of("command").unwrap();
+    let project_name = matches.value_of("project_name").unwrap();
+    let path = matches.value_of("path");
 
     if command == "create" {
-        create_python_project(project_name);
-    }
-    else {
-        log::warn!("Invalid command, please use 'create'");    
+        create_python_project(project_name, path);
+    } else {
+        log::warn!("Invalid command, please use 'create'");
         println!("Command not found");
     }
 }
