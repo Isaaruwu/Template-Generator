@@ -42,7 +42,7 @@ fn main() {
     let project_types = ["default", "data"];
     let languages = ["py"];
 
-    let matches = App::new("My CLI App")
+    let matches = App::new("Latest")
         .arg(Arg::with_name("language")
             .help("The programming language")
             .possible_values(&languages)
