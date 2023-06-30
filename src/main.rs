@@ -35,17 +35,31 @@ fn pip_freeze(project_path: &path::PathBuf) {
 
     log::info!("Creating requirements.txt in {}", path_string);    
 
-    let output = Command::new("cmd")
-        .arg("/C")
-        .arg(format!("pip freeze > {}\\requirements.txt", path_string))
-        .output()
-        .expect("Failed to execute command");
-
-    if output.status.success() {
-        log::info!("Requirements.txt was created!");    
+    let output = if cfg!(target_os = "windows") {
+        let mut cmd = Command::new("cmd");
+        cmd.arg("/C")
+            .arg("pip freeze")
+            .stdout(std::fs::File::create(project_path.join("requirements.txt")).unwrap())
+            .output()
     } else {
-        let stderr = String::from_utf8_lossy(&output.stderr);
-        log::warn!("Error occurred while creating requirements.txt: {}", stderr);    
+        Command::new("sh")
+            .arg("-c")
+            .arg(format!("pip freeze > {}/requirements.txt", path_string))
+            .output()
+    };
+
+    match output {
+        Ok(output) => {
+            if output.status.success() {
+                log::info!("requirements.txt was created!");
+            } else {
+                let stderr = String::from_utf8_lossy(&output.stderr);
+                log::warn!("Error occurred while creating requirements.txt: {}", stderr);
+            }
+        }
+        Err(err) => {
+            log::error!("Failed to execute command: {}", err);
+        }
     }
 }
 
@@ -54,7 +68,7 @@ fn create_python_project(project_name: &str) {
     let project_path = path::Path::new(&current_dir).join(project_name);
     
     if project_path.exists() {
-        log::warn!("Project already exists, exiting...");
+        log::error!("Project already exists, exiting...");
         return;
     }
 
