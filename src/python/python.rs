@@ -1,6 +1,8 @@
 use std::process::Command;
 use std::{path, fs};
 
+use super::data;
+
 fn initialize_venv(project_path: &path::PathBuf) {
     log::info!("Creating virtual environment in {}", project_path.to_string_lossy());    
 
@@ -10,18 +12,26 @@ fn initialize_venv(project_path: &path::PathBuf) {
         .output()
         .expect("Failed to create virtual environment");
 
-    if output.status.success() {
-        log::info!("Virtual env was created!");    
-    } else {
-        let stderr = String::from_utf8_lossy(&output.stderr);
-        log::warn!("Error occurred while creating venv: {}", stderr);    
+    match output {
+        Ok(_output) => {
+            log::info!("Virtual environment was created!");
+        }
+        Err(err) => {
+            log::error!("Failed to execute command: {}", err);
+        }
     }
 }
 
-fn create_main_file(project_path: &path::PathBuf) {
-    log::info!("Creating main.py...");    
-    let main_file_path = path::Path::new(&project_path).join("main.py");
-    fs::write(&main_file_path, "print('Hello World')").unwrap();
+fn create_main_file(project_path: &path::PathBuf, project_type: &Option<&str>) {
+    log::info!("Creating main.py..."); 
+
+    let main_file_path = &project_path.join("main.py");
+    fs::write(&main_file_path, "print('Hello World')").unwrap();   
+
+    match project_type {
+        Some("data") => data::create_data_template(&project_path),
+        _ => {}
+    }
 }
 
 fn pip_freeze(project_path: &path::PathBuf) {
@@ -52,8 +62,8 @@ fn pip_freeze(project_path: &path::PathBuf) {
     }
 }
 
-pub fn create_python_project(project_path: &path::PathBuf) {
+pub fn create_python_project(project_path: &path::PathBuf, project_type: &Option<&str>) {
     initialize_venv(&project_path);
-    create_main_file(&project_path);
+    create_main_file(&project_path, &project_type);
     pip_freeze(&project_path);
 }
