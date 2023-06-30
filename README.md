@@ -4,8 +4,9 @@ The Project Template Generator is a command-line interface (CLI) application wri
 It allows you to quickly generate a project template with a predefined directory structure and common files for your Python projects.
 
 ## Features
-- Generates a project template with a venv and requirement.txt.
-- Customizable project name
+- Generates a for different languages and different types of projects.
+- Customizable project name.
+- You can use the git flag (-g) to initialize a git repo with a gitignore template based on the chosen language
 - Easy setup and usage.
 
 ## Installation
@@ -24,7 +25,7 @@ It allows you to quickly generate a project template with a predefined directory
 ## Usage
 1. To generate a project template in your current directory run
 ```shell
-   tgen create <language> <project_name> [project_type] [path]
+   tgen create <language> <project_name> [project_type] [path] [-g]
 ```
 NB. For additionnal help
 ```shell
@@ -34,10 +35,8 @@ NB. For additionnal help
 ## Future Development 
 This Project Template Generator is an ongoing project, and there are several areas that can be improved and expanded. Some ideas for future development include:
 
-- Adding support for different programming languages and OS.
-- Providing additional project configuration options.
-- Creating a git repo. 
-- Implementing templates for specific project types (e.g., web applications, data science projects).
+- Supporting different langages
+- Implementing templates for specific project types (e.g., web applications, etc).
 - Enhancing the CLI interface with more interactive features and options.
 
 ## License
@@ -48,3 +47,4 @@ Contributions are welcome! If you find any issues or have suggestions for improv
 
 ## Acknowledgments
 This project was inspired by the need for a quick and standardized way to set up Python projects.
+gitignore templates are from [https://github.com/github/gitignore/tree/main]
