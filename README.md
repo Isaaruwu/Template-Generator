@@ -24,7 +24,11 @@ It allows you to quickly generate a project template with a predefined directory
 ## Usage
 1. To generate a project template in your current directory run
 ```shell
-   pyc create <project_name>
+   pyc create <language> <project_name> [project_type] [path]
+```
+NB. For additionnal help
+```shell
+   pyc --help
 ```
 
 ## Future Development 
