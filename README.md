@@ -1,7 +1,7 @@
 # Project Template Generator
 
 The Project Template Generator is a command-line interface (CLI) application written in Rust. 
-It allows you to quickly generate a project template with a predefined directory structure and common files for your Python projects.
+It allows you to quickly generate a project template with a predefined directory structure and common files for your coding projects.
 
 ## Features
 - Generates a for different languages and different types of projects.
