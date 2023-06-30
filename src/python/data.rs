@@ -9,6 +9,8 @@ pub fn create_data_template(project_path: &path::PathBuf) {
     let ipynb_file_path_ = &project_path.join("main.ipynb");
     fs::write(&ipynb_file_path_, "").unwrap();
 
+    log::info!("Creating data template...");    
+
     let directory = &project_path.join("data");
     fs::create_dir(&directory).unwrap();
 

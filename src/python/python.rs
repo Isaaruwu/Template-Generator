@@ -6,20 +6,11 @@ use super::data;
 fn initialize_venv(project_path: &path::PathBuf) {
     log::info!("Creating virtual environment in {}", project_path.to_string_lossy());    
 
-    let output = Command::new("python")
+    Command::new("python")
         .args(&["-m", "venv", "venv"])
         .current_dir(project_path)
         .output()
         .expect("Failed to create virtual environment");
-
-    match output {
-        Ok(_output) => {
-            log::info!("Virtual environment was created!");
-        }
-        Err(err) => {
-            log::error!("Failed to execute command: {}", err);
-        }
-    }
 }
 
 fn create_main_file(project_path: &path::PathBuf, project_type: &Option<&str>) {
