@@ -14,7 +14,7 @@ It allows you to quickly generate a project template with a predefined directory
 2. Make sure you have Rust installed on your system. You can download and install it from the official Rust website (https://www.rust-lang.org/tools/install).
 3. Clone this repository or download the source code.
 ```shell
-   git clone [https://github.com/your-username/project-template-generator.git](https://github.com/Isaaruwu/Template-Generator.git)
+   git clone https://github.com/your-username/project-template-generator.git
 ```
 3. Build the project
 ```shell
