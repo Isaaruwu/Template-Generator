@@ -1,5 +1,3 @@
-extern crate simple_logger;
-
 use simple_logger::SimpleLogger;
 
 use std::{env, path, fs, process::Command};
@@ -70,6 +68,11 @@ fn main() {
     SimpleLogger::new().init().unwrap();
     
     let args: Vec<String> = env::args().collect();
+
+    if args.len() < 3 {
+        log::warn!("Invalid number of arguments, please use 'create <project_name>'");    
+        return;
+    }
 
     let command = &args[1];
     let project_name = &args[2];

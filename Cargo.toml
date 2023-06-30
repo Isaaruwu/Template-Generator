@@ -1,6 +1,8 @@
 [package]
-name = "my-package"
+name = "pyc"
 version = "0.1.0"
+edition = "2021"
 [dependencies]
 log = "0.4.19"
 simple_logger = "4.2.0"
+clap = "2.33.0"
