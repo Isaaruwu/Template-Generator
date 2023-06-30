@@ -4,7 +4,7 @@ The Project Template Generator is a command-line interface (CLI) application wri
 It allows you to quickly generate a project template with a predefined directory structure and common files for your coding projects.
 
 ## Features
-- Generates a for different languages and different types of projects.
+- Generates a tailored template for different languages and different types of projects.
 - Customizable project name.
 - You can use the git flag (-g) to initialize a git repo with a gitignore template based on the chosen language
 - Easy setup and usage.
